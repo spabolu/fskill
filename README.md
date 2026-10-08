@@ -85,13 +85,13 @@ Every fskill build in those rounds passed the checks above. Without fskill, 9 of
 
 To check that the result did not depend on old baselines or on one judge, we built six fresh todo apps without fskill and had both Claude Opus and Grok judge them against fskill. fskill scored 7.7 and 7.9 against 5.5 and 4.1, won 35 of 36 pairs, and none of its builds was marked broken. Grok alone gave a smaller gap on the M365 score, 7.5 against 5.7.
 
-The screenshots at the top show a todo build with fskill that both judges scored 8 on both counts, next to one of the stronger builds without fskill. Both judges marked that build broken, because its phone layout hides two of the three filters.
+The screenshots with fskill at the top come from the current version, built after the last judged round, so they were not scored. The build without fskill is one of the stronger ones. Both judges marked it broken, because its phone layout hides two of the three filters.
 
 ### Limits of these tests
 
 - fskill was tuned on the todo, settings, and team prompts and scored on the same prompts. The expense tracker was added later as a check, but notes from judging it also shaped one rule, the layout of summary cards. Treat these results as evidence on similar small apps, not on every app.
 - The judge is a model, not a person. Scores for the same screenshots moved by about half a point between runs, so differences under a point between fskill versions are noise.
-- The released skill adds small fixes after the last full round: server-rendering guards, a theme setting on `Root`, a narrower import rule, and a stricter badge check. They passed the checker tests, a type check, and the browser test on two apps, but not a fresh judged round.
+- The released skill changes a few things after the last full round. It no longer invents a logo for the app. It also adds server-rendering guards, a theme setting on `Root`, a narrower import rule, and a stricter badge check. They passed the checker tests, a type check, and the browser test on two apps, but not a fresh judged round.
 
 ## Trademarks
 
