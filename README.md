@@ -46,12 +46,11 @@ fskill covers Fluent UI React v9 only. It does not cover Fluent UI Web Component
 
 ## Install fskill
 
-To use fskill in one project, copy the `skills/fskill` folder into the project at `.opencode/skills/fskill`:
+Clone this repository. To use fskill in one project, copy its `skills/fskill` folder into the project at `.opencode/skills/fskill`. From the project folder, replace `FSKILL_REPO` with the path of your clone and run:
 
 ```bash
-git clone https://github.com/<owner>/fskill.git /tmp/fskill
 mkdir -p .opencode/skills
-cp -r /tmp/fskill/skills/fskill .opencode/skills/fskill
+cp -r FSKILL_REPO/skills/fskill .opencode/skills/fskill
 ```
 
 To use fskill in every project, copy the folder to `~/.config/opencode/skills/fskill` instead. [OpenCode skills](https://opencode.ai/v2/docs/skills/) lists the other folders that OpenCode reads.
@@ -72,9 +71,10 @@ Restyle this app with fskill. Keep its features and data as they are.
 
 ## What fskill does not do yet
 
-- It is less proven on large workspace apps. On a mail client and an issue board, fskill builds beat builds without it. On a file manager the results were even: judges rated builds without fskill that copy OneDrive as looking more like Microsoft 365, though all of them broke on a phone. See [complex apps](docs/results.md#complex-apps).
+- It is less proven on large workspace apps. On a mail client and an issue board, the last judged version beat builds without it. The released version adds fixes from that round that no judged round has tested yet. On a file manager the results were even: judges rated builds without fskill that copy OneDrive as looking more like Microsoft 365, though all of them broke on a phone. See [complex apps](docs/results.md#complex-apps).
+- It is built for apps rendered in the browser, such as Vite apps. In a server-rendered app such as Next.js, add `'use client'` to the copied templates. The first render may still show the light theme or the desktop layout.
 - It does not add charts. Fluent UI React v9 has no chart components.
-- It is tested with two agent models and one judge setup, on seven app prompts. Your results on other apps may differ.
+- It is tested with two agent models and two judge models, on seven app prompts. Your results on other apps may differ.
 
 ## Report a problem
 

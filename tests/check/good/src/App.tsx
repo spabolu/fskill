@@ -15,7 +15,11 @@ export function App() {
 				<Button appearance="primary" icon={<AddRegular />}>Add task</Button>
 				<Button>To Do</Button>
 				<Badge appearance="outline" color="informative">Owner</Badge>
-				<input type="file" hidden aria-label="Upload a file" />
+				<input
+					hidden
+					type="file"
+					aria-label="Upload a file"
+				/>
 				<Badge appearance="tint" color="subtle">Travel</Badge>
 			</div>
 		</Root>

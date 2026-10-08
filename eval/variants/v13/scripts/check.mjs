@@ -23,7 +23,7 @@ const lineRules = [
 	},
 	{ id: 'raw-font', test: (l) => /fontFamily\s*:\s*['"`]|fontWeight\s*:\s*['"`]?\d/.test(l), fix: 'Use tokens.fontFamily* and tokens.fontWeight*, or a typography component' },
 	{ id: 'inline-style', test: (l) => /style=\{\{/.test(l), fix: 'Move the style into makeStyles' },
-	{ id: 'native-control', test: (l) => /<(button|input|select|textarea)\b/.test(l) && !/<input\b[^>]*type=["']file["']/.test(l), fix: 'Use the Fluent component: Button, Input, Dropdown, or Textarea' },
+	{ id: 'native-control', test: (l) => /<(button|input|select|textarea)\b/.test(l), fix: 'Use the Fluent component: Button, Input, Dropdown, or Textarea' },
 	{ id: 'raw-heading', test: (l) => /<h[1-6]\b/.test(l), fix: 'Use a Fluent typography component with as="h1", such as <Title3 as="h1">' },
 	{ id: 'emoji', test: (l) => /\p{Extended_Pictographic}/u.test(l.replace(/[©®™]/g, '')), fix: 'Use an icon from @fluentui/react-icons or plain text' },
 	{ id: 'teams-theme', test: (l) => /\bteams(Light|Dark|HighContrast)Theme\b/.test(l), fix: 'Use webLightTheme and webDarkTheme. The Teams themes give a web app the Teams purple' },
@@ -77,7 +77,7 @@ for (const f of code) {
 			`${relative('.', f)}:${line}: badge-subtle. Use color="informative" for a neutral badge. color="subtle" is a white badge for dark surfaces and disappears on a white page.`,
 		);
 	}
-	text.split('\n').forEach((line, i) => {
+	text.replace(/<input\b(?=[^>]*\btype=["']file["'])/g, '<file-input').split('\n').forEach((line, i) => {
 		const src = line.replace(/\/\/.*$/, '');
 		for (const r of lineRules) if (r.test(src)) (r.warn ? warnings : problems).push(`${relative('.', f)}:${i + 1}: ${r.id}. ${r.fix}.\n    ${line.trim()}`);
 	});

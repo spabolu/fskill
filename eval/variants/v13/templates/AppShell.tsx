@@ -22,7 +22,7 @@ import {
 	tokens,
 } from '@fluentui/react-components';
 import { GridDots24Regular } from '@fluentui/react-icons';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode, type ReactElement } from 'react';
 
 const useStyles = makeStyles({
 	shell: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles({
 		borderBottom: `${tokens.strokeWidthThin} solid ${tokens.colorNeutralStroke2}`,
 	},
 	logo: { display: 'flex', alignItems: 'center', height: '28px', flexShrink: 0 },
-	appName: { whiteSpace: 'nowrap' },
+	appName: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 },
 	launcher: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM, minWidth: '240px' },
 	launcherApp: { display: 'flex', alignItems: 'center', gap: tokens.spacingHorizontalS, color: tokens.colorNeutralForeground1 },
 	headerCenter: {
@@ -105,7 +105,7 @@ const useStyles = makeStyles({
 	description: { color: tokens.colorNeutralForeground2, marginTop: `calc(${tokens.spacingVerticalM} * -1)` },
 });
 
-export type Section = { value: string; label: string; icon: JSX.Element; count?: number };
+export type Section = { value: string; label: string; icon: ReactElement; count?: number };
 
 const narrowQuery = typeof window === 'undefined' ? null : window.matchMedia('(max-width: 639px)');
 
@@ -228,7 +228,7 @@ export function AppShell(props: {
 						)}
 					>
 						<div className={full ? styles.fullHead : styles.contents}>
-							<div className={mergeClasses(styles.titleRow, phoneTabs && !props.titleActions && styles.visuallyHidden)}>
+							<div className={mergeClasses(styles.titleRow, phoneTabs && !props.titleActions && !props.breadcrumb && styles.visuallyHidden)}>
 								<Title3 as="h1" className={props.breadcrumb ? styles.visuallyHidden : undefined}>
 									{props.title}
 								</Title3>
