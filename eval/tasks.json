@@ -26,5 +26,29 @@
 		"hidden": true,
 		"seeds": 2,
 		"prompt": "Build an expense tracker. I want to add an expense with a description, amount, category (Travel, Meals, Supplies, Software), and date, see all expenses in a list, delete one, and see the total for each category. Start with 8 sample expenses. Make it look and feel like a professional Microsoft web app."
+	},
+	{
+		"id": "mail",
+		"project": "litware-mail",
+		"hidden": true,
+		"complex": true,
+		"seeds": 2,
+		"prompt": "Build an email client for our team. It needs a folder list (Inbox, Sent, Drafts, Archive) with unread counts, a message list showing sender, subject, a preview, and the time, and a reading pane that shows the selected message. Let me compose a new message, reply, archive, delete, mark a message read or unread, and search my messages. Start with 15 sample messages in the inbox. Make it look and feel like a professional Microsoft web app."
+	},
+	{
+		"id": "issues",
+		"project": "adatum-projects",
+		"hidden": true,
+		"complex": true,
+		"seeds": 2,
+		"prompt": "Build a project tracker for our software team. Show issues on a board with To do, In progress, In review, and Done columns, and let me switch to a list view. Each issue has a title, an ID, an assignee, a priority (Urgent, High, Medium, Low), and labels. Let me create an issue, open one to see and edit its details in a side panel, move it to another column, filter by assignee and priority, and delete it. Start with 14 sample issues. Make it look and feel like a professional Microsoft web app."
+	},
+	{
+		"id": "files",
+		"project": "proseware-files",
+		"hidden": true,
+		"complex": true,
+		"seeds": 2,
+		"prompt": "Build a file manager for our cloud storage. Show folders and files with name, owner, modified date, and size, with a breadcrumb for the current folder. Let me open folders, switch between a list and a grid view, select several items to move, download, or delete them together, rename an item, create a folder, and upload a file (just add it to the list). Show storage used out of 1 TB. Start with a realistic folder tree. Make it look and feel like a professional Microsoft web app."
 	}
 ]

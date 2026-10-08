@@ -1,9 +1,10 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { copyFileSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const [round, task, model, ...sources] = process.argv.slice(2);
 const evalDir = new URL('.', import.meta.url).pathname;
-const reviewRoot = '/private/var/folders/46/76my2cwn7y1c628h0j7xms180000gn/T/opencode/review';
+const reviewRoot = join(process.env.FSKILL_EVAL_DIR ?? join(tmpdir(), 'fskill-eval'), 'review');
 const modelShort = model.split('/').pop().replace(/[^a-z0-9]+/gi, '-');
 const slug = `${round}-${task}-${modelShort}`;
 const reviewDir = join(reviewRoot, slug);
@@ -22,9 +23,9 @@ const key = {};
 builds.forEach((b, i) => {
 	const label = String.fromCharCode(65 + i);
 	key[label] = { id: b.id, arm: b.arm, round: b.round };
-	for (const kind of ['desktop', 'mobile', 'after-delete']) {
-		const src = join(evalDir, 'runs', b.round, 'shots', `${b.id}-${kind}.png`);
-		if (existsSync(src)) copyFileSync(src, join(reviewDir, `${label}-${kind}.png`));
+	const shotDir = join(evalDir, 'runs', b.round, 'shots');
+	for (const f of readdirSync(shotDir).filter((f) => f.startsWith(`${b.id}-`) && f.endsWith('.png') && !f.endsWith('-focus.png'))) {
+		copyFileSync(join(shotDir, f), join(reviewDir, `${label}-${f.slice(b.id.length + 1)}`));
 	}
 });
 mkdirSync(join(evalDir, 'runs', round, 'judging'), { recursive: true });

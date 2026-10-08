@@ -1,3 +1,4 @@
+import { tmpdir } from 'node:os';
 import { cpSync, existsSync, mkdirSync, readFileSync, symlinkSync, writeFileSync } from 'node:fs';
 import { randomBytes } from 'node:crypto';
 import { join } from 'node:path';
@@ -9,7 +10,7 @@ if (!round || !arm || !skillDir || !models) {
 }
 const evalDir = new URL('.', import.meta.url).pathname;
 const runtime = join(evalDir, 'runtime');
-const projectsRoot = '/private/var/folders/46/76my2cwn7y1c628h0j7xms180000gn/T/opencode/projects';
+const projectsRoot = join(process.env.FSKILL_EVAL_DIR ?? join(tmpdir(), 'fskill-eval'), 'projects');
 const tasks = JSON.parse(readFileSync(join(evalDir, 'tasks.json'), 'utf8')).filter((t) => !onlyTasks || onlyTasks.split(',').includes(t.id));
 const runDir = join(evalDir, 'runs', round);
 mkdirSync(runDir, { recursive: true });

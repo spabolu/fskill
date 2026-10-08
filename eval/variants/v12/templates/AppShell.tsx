@@ -89,9 +89,8 @@ const useStyles = makeStyles({
 		backgroundColor: tokens.colorNeutralBackground1,
 	},
 	fullBody: { display: 'flex', flexGrow: 1, minHeight: 0 },
-	phoneFooter: { padding: `${tokens.spacingVerticalL} ${tokens.spacingHorizontalM}` },
+	phoneFooter: { paddingTop: tokens.spacingVerticalL },
 	nav: { flexShrink: 0 },
-	contents: { display: 'contents' },
 	navFooter: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalXS, padding: `${tokens.spacingVerticalM} ${tokens.spacingHorizontalM}` },
 	titleRow: {
 		display: 'flex',
@@ -118,7 +117,6 @@ export type ShellSearch = { placeholder: string; value: string; onChange: (value
  * and "full" for workspaces that fill the window, such as mail with a reading pane or a board. In "full", the children
  * fill the space under a compact title row as a flex row, so put panes side by side and give each its own scroll.
  * `navFooter` sits at the bottom of the left menu, such as a storage meter. On phones it follows the content.
- * `breadcrumb` takes the place of the visible title, and the title stays as a hidden h1 for screen readers. `commandBar` sits under the title row and holds view tabs, filters, and bulk commands.
  * `search` filters the view's main list. It sits in the header on wide screens and above the content on phones.
  * `sections` are the app's views: separate areas, the views of a personal list, or the groups of a settings page.
  * On phones, up to five sections show as tabs under the title, and more go in a menu.
@@ -133,8 +131,6 @@ export function AppShell(props: {
 	titleActions?: ReactNode;
 	width: 'table' | 'list' | 'form' | 'full';
 	navFooter?: ReactNode;
-	breadcrumb?: ReactNode;
-	commandBar?: ReactNode;
 	sections?: Section[];
 	selected?: string;
 	onSelect?: (value: string) => void;
@@ -227,35 +223,31 @@ export function AppShell(props: {
 							full && styles.full,
 						)}
 					>
-						<div className={full ? styles.fullHead : styles.contents}>
-							<div className={mergeClasses(styles.titleRow, phoneTabs && !props.titleActions && styles.visuallyHidden)}>
-								<Title3 as="h1" className={props.breadcrumb ? styles.visuallyHidden : undefined}>
-									{props.title}
-								</Title3>
-								{props.breadcrumb}
-								{props.titleActions}
-							</div>
-							{props.description && <Body1 className={styles.description}>{props.description}</Body1>}
-							{phoneTabs && (
-								<TabList className={styles.phoneTabs} selectedValue={props.selected} onTabSelect={(_, d) => props.onSelect?.(String(d.value))}>
-									{sections.map((s) => (
-										<Tab key={s.value} value={s.value}>
-											{s.label}
-											{s.count !== undefined && <span className={styles.tabCount}>{s.count}</span>}
-										</Tab>
-									))}
-								</TabList>
-							)}
-							{props.search && narrow && (
-								<SearchBox
-									className={styles.pageSearch}
-									placeholder={props.search.placeholder}
-									aria-label={props.search.placeholder}
-									value={props.search.value}
-									onChange={(_, d) => props.search?.onChange(d.value)}
-								/>
-							)}
-							{props.commandBar}
+						<div className={full ? styles.fullHead : undefined}>
+						<div className={mergeClasses(styles.titleRow, phoneTabs && !props.titleActions && styles.visuallyHidden)}>
+							<Title3 as="h1">{props.title}</Title3>
+							{props.titleActions}
+						</div>
+						{props.description && <Body1 className={styles.description}>{props.description}</Body1>}
+						{phoneTabs && (
+							<TabList className={styles.phoneTabs} selectedValue={props.selected} onTabSelect={(_, d) => props.onSelect?.(String(d.value))}>
+								{sections.map((s) => (
+									<Tab key={s.value} value={s.value}>
+										{s.label}
+										{s.count !== undefined && <span className={styles.tabCount}>{s.count}</span>}
+									</Tab>
+								))}
+							</TabList>
+						)}
+						{props.search && narrow && (
+							<SearchBox
+								className={styles.pageSearch}
+								placeholder={props.search.placeholder}
+								aria-label={props.search.placeholder}
+								value={props.search.value}
+								onChange={(_, d) => props.search?.onChange(d.value)}
+							/>
+						)}
 						</div>
 						{full ? <div className={styles.fullBody}>{props.children}</div> : props.children}
 						{props.navFooter && !drawer && <div className={styles.phoneFooter}>{props.navFooter}</div>}

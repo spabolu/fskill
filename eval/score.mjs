@@ -1,10 +1,11 @@
+import { tmpdir } from 'node:os';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const [round, armUnderTest = 'v1', baseArm = 'base'] = process.argv.slice(2);
 const evalDir = new URL('.', import.meta.url).pathname;
 const judging = join(evalDir, 'runs', round, 'judging');
-const reviewRoot = '/private/var/folders/46/76my2cwn7y1c628h0j7xms180000gn/T/opencode/review';
+const reviewRoot = join(process.env.FSKILL_EVAL_DIR ?? join(tmpdir(), 'fskill-eval'), 'review');
 const gateOf = (r, id) => {
 	const p = join(evalDir, 'runs', r, 'gates', `${id}.json`);
 	return existsSync(p) ? JSON.parse(readFileSync(p, 'utf8')) : null;

@@ -15,11 +15,11 @@ Build the UI with Fluent UI React v9 and the Fluent 2 design language, so the ap
 4. Build every view inside `AppShell`. It draws the 48 px suite header with the app launcher, the product name, the page background, the page title, an optional left `NavDrawer`, and the `Toaster`.
    - `appName` is the product, such as "Northwind Tasks". `title` names the view, such as "My tasks" or "Team members". Never use the same words for both.
    - Pass `logo` only when the user supplies the product's logo or explicitly asks for a placeholder. Never make one up from an icon or initials.
-   - `width` is `"table"` for data tables, `"list"` for lists and card grids, and `"form"` for settings and forms, in a centered column. Workspace apps such as mail use `"full"`, as described in [Lay out workspace apps](#lay-out-workspace-apps).
+   - `width` is `"table"` for data tables, `"list"` for lists and card grids, and `"form"` for settings and forms. The column is centered.
    - Pass `userName` with a realistic name for any app a person signs in to, which includes task, settings, and admin apps.
    - Pass `search` when the user asked for search or the view is a table of records. It filters that list by name, title, or email, and it is the only search on the page. A short list such as a todo list and a settings page get no search.
    - Put the page's main action, such as **Invite member**, in `titleActions`. Use `description` for one short sentence under the title only when the title alone is unclear.
-   - Pass `sections` for the app's views. Use them when the app has two or more separate areas, such as Inbox and Calendar, and for the views of a personal list, such as All, Active, and Completed tasks, the way Microsoft To Do does. Give a `count` only to the views of a personal list and to mail folders, where it counts unread mail. The page title is the selected view's name.
+   - Pass `sections` for the app's views. Use them when the app has two or more separate areas, such as Inbox and Calendar, and for the views of a personal list, such as All, Active, and Completed tasks, the way Microsoft To Do does. Give each list view a `count`. The page title is the selected view's name.
    - Name task views "All tasks", "Active", and "Completed", with `TaskListLtr20Regular`, `Circle20Regular`, and `CheckmarkCircle20Regular`.
    - A settings page with three or more groups, such as Profile, Notifications, and Appearance, also uses `sections`, one group per view. Put the group in one `Card` with `padding: tokens.spacingHorizontalXL` and `gap: tokens.spacingVerticalL`. **Discard** (`appearance="subtle"`) then **Save** (`appearance="primary"`) sit in `titleActions`, cover every group, and stay disabled until something changes.
    - Section icons are 20 px icons, such as `Person20Regular`.
@@ -66,20 +66,17 @@ Mail, file managers, boards, and other apps where people work inside the page al
 
 - Pass `width="full"` to `AppShell`. Panes sit side by side as continuous `colorNeutralBackground1` surfaces split by a 1 px `colorNeutralStroke2` line. Never float each pane as a separate `Card` on the gray page. Give each pane its own scroll.
 - Put the app's places in `sections`, such as Inbox, Sent, Drafts, and Archive, or My files, Recent, and Shared. Put the primary create action, such as **New message**, in `titleActions`.
-- Pass the command bar to `AppShell` as `commandBar`. It holds the view switch, the filters, and the bulk commands.
 - Different views of the same items, such as Board and List or List and Grid, are a `TabList` with `size="small"` in the command bar. Never put them in `sections` as well. Keep the same page width in every view.
-- Show filters in the same command bar as `Dropdown`s at the default size, with a placeholder such as "Assignee" and no visible label, so they match the buttons beside them.
+- Show filters in the same command bar as `Dropdown`s with `size="small"` and a placeholder such as "Assignee", with no visible label.
 - Select the first item at load, so the reading pane is never empty. Show a row's quick actions, such as archive and delete, on hover and focus, not all the time.
 - Show unread items with `fontWeight: tokens.fontWeightSemibold` on the sender and subject and a small brand-colored dot. Read items are regular weight.
-- Keep list rows one height. Cut a preview or description to one line with an ellipsis.
-- Open an item's details in an `OverlayDrawer` with `position="end"`. Its `DrawerHeaderTitle` names the kind and ID, such as "Issue AD-104". The editable title is the first field, so the title appears once. End it with **Delete** (`appearance="subtle"`), then **Cancel**, then **Save** (`appearance="primary"`), which stays disabled until something changes.
-- On a board, each column is a `colorNeutralBackground2` well with its name and count. Lay the columns out with `gridTemplateColumns: 'repeat(4, minmax(0, 1fr))'`, so every column fits beside the left menu, and let card text end in an ellipsis. Every card shows the title, ID, priority badge, and assignee `Avatar`. Put **Move to** in the card's one **More actions** `Menu`, next to Delete. Dragging may be added, but never as the only way.
-- Show a folder path with `Breadcrumb size="large"`, `BreadcrumbItem`, `BreadcrumbButton`, and `BreadcrumbDivider`, passed to `AppShell` as `breadcrumb`. List every folder from the top level to the current one, and mark the last `BreadcrumbButton` `current`. The breadcrumb takes the place of the visible title, so pass the current folder's name as `title` for screen readers.
+- Open an item's details in an `OverlayDrawer` with `position="end"`. Its `DrawerHeader` names the item by title, not only by ID. End it with **Delete** (`appearance="subtle"`), then **Cancel**, then **Save** (`appearance="primary"`), which stays disabled until something changes.
+- On a board, each column is a `colorNeutralBackground2` well with its name and count. Every card shows the title, ID, priority badge, and assignee `Avatar`. Move a card with a **Move to** `Menu` on the card. Dragging may be added, but never as the only way.
+- Show a folder path with `Breadcrumb`, `BreadcrumbItem`, `BreadcrumbButton`, and `BreadcrumbDivider`. Make the current folder the page `title`, and show the breadcrumb only below the top level, so it never repeats the title.
 - Name cells that open an item use `Link` with `appearance="subtle"`, so they read as text, not as underlined blue links.
 - For several items at once, pass `selection` to `DataTable`, or put a `Checkbox` on each grid card. While anything is selected, the command bar shows a clear `Button` first, then "2 selected", then the bulk commands.
 - Upload with a `Button` that clicks a hidden `<input type="file" hidden>` through a ref. That input is the one raw input allowed.
-- Show file types with Fluent icons colored by palette tokens: folders `colorPaletteYellowForeground2`, Word `colorPaletteBlueForeground2`, Excel `colorPaletteGreenForeground2`, PowerPoint `colorPaletteDarkOrangeForeground2`, and PDF `colorPaletteRedForeground2`. Other files keep `colorNeutralForeground2`.
-- When the user asks to see storage or a quota, show it as a `ProgressBar` in `navFooter`, with a `Caption1` such as "240 GB of 1 TB used". Otherwise leave `navFooter` out.
+- Show storage or quota as a `ProgressBar` in `navFooter`, with a `Caption1` such as "240 GB of 1 TB used".
 - On phones, show one pane at a time. Opening an item shows its pane with a back `Button` in the pane header.
 
 ## Style with tokens only

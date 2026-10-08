@@ -1,8 +1,12 @@
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { execSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { mkdirSync, readFileSync } from 'node:fs';
 
 const sessionID = process.argv[2];
-const tmp = `/private/var/folders/46/76my2cwn7y1c628h0j7xms180000gn/T/opencode/transcript-${sessionID}.json`;
+const workRoot = process.env.FSKILL_EVAL_DIR ?? join(tmpdir(), 'fskill-eval');
+mkdirSync(workRoot, { recursive: true });
+const tmp = join(workRoot, `transcript-${sessionID}.json`);
 const get = (path) => {
 	execSync(`opencode api get '${path}' > ${tmp}`, { cwd: '/tmp' });
 	return JSON.parse(readFileSync(tmp, 'utf8'));

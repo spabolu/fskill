@@ -137,7 +137,9 @@ async function gateOne(browser, m) {
 					break;
 				}
 				let clickError = null;
-				await del.first().click({ timeout: 3000 }).catch((e) => (clickError = e.message.split('\n')[0]));
+				await del.first().click({ timeout: 3000 }).catch(async () => {
+					await del.first().click({ timeout: 3000, force: true }).catch((e) => (clickError = e.message.split('\n')[0]));
+				});
 				await fresh.mouse.move(5, 400);
 				await fresh.bringToFront();
 				result.toastShown = await fresh.locator('.fui-Toast').first().waitFor({ state: 'visible', timeout: 2500 }).then(() => true, () => false);
@@ -160,6 +162,17 @@ async function gateOne(browser, m) {
 				break;
 			}
 		}
+		for (const [name, act] of flows[m.task] ?? []) {
+			const p = await browser.newPage({ viewport: { width: 1280, height: 800 }, colorScheme: 'light' });
+			p.on('pageerror', (e) => errors.push(e.message));
+			await p.goto(url);
+			await p.waitForTimeout(900);
+			const done = await act(p).then(() => true, () => false);
+			await p.waitForTimeout(700);
+			if (done) await p.screenshot({ path: join(shots, `${m.id}-flow-${name}.png`) });
+			else result.notes.push(`flow ${name}: no matching control`);
+			await p.close();
+		}
 	} finally {
 		server.close();
 	}
@@ -168,9 +181,44 @@ async function gateOne(browser, m) {
 	return result;
 }
 
+const clickFirst = async (page, locators) => {
+	for (const l of locators) {
+		const n = await l.count();
+		for (let i = 0; i < n; i++) {
+			const el = l.nth(i);
+			if (await el.isVisible()) return el.click({ timeout: 2000 });
+		}
+	}
+	throw new Error('none');
+};
+const longRows = (page, min) =>
+	page.locator('[role=option], [role=row], [role=listitem], [role=gridcell], article, li').filter({ hasText: new RegExp(`.{${min},}`) });
+const flows = {
+	mail: [
+		['open-message', (p) => longRows(p, 30).nth(2).click({ timeout: 2000 })],
+		['compose', (p) => clickFirst(p, [p.getByRole('button', { name: /new (mail|message)|compose|^new$/i })])],
+	],
+	issues: [
+		['open-issue', (p) => clickFirst(p, [p.getByText(/\b[A-Z]{2,6}-\d+\b/)])],
+		['list-view', (p) => clickFirst(p, [p.getByRole('tab', { name: /list/i }), p.getByRole('radio', { name: /list/i }), p.getByRole('button', { name: /list/i })])],
+	],
+	files: [
+		['grid-view', (p) => clickFirst(p, [p.getByRole('tab', { name: /grid|tile/i }), p.getByRole('radio', { name: /grid|tile/i }), p.getByRole('button', { name: /grid|tile/i })])],
+		[
+			'select-two',
+			async (p) => {
+				const boxes = p.getByRole('checkbox');
+				if ((await boxes.count()) < 3) throw new Error('none');
+				await boxes.nth(1).click({ timeout: 2000 });
+				await boxes.nth(2).click({ timeout: 2000 });
+			},
+		],
+	],
+};
+
 const todo = manifest.filter((m) => !onlyIds || onlyIds.split(',').includes(m.id));
 const launch = () => chromium.launch({
-	executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+	executablePath: process.env.CHROME_PATH ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
 	args: ['--disable-background-timer-throttling', '--disable-renderer-backgrounding', '--disable-backgrounding-occluded-windows'],
 });
 const queue = [...todo];
