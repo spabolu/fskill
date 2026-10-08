@@ -1,0 +1,30 @@
+[
+	{
+		"id": "todo",
+		"project": "northwind-tasks",
+		"hidden": false,
+		"seeds": 3,
+		"prompt": "Build a todo list web app. Make it look and feel like a professional Microsoft web app.\n\nIt needs: add a task, mark a task complete, delete a task, and filter between all, active, and completed tasks. Start with these 5 tasks, with the 2nd and 5th already completed: \"Review the quarterly budget\", \"Email the design team\", \"Book a room for the offsite\", \"Draft the project kickoff agenda\", \"Update the onboarding checklist\"."
+	},
+	{
+		"id": "settings",
+		"project": "fabrikam-portal",
+		"hidden": false,
+		"seeds": 2,
+		"prompt": "Build the settings page for our web app. It needs a profile section (display name, email, job title), notification preferences (email digest on or off, mentions on or off, and a digest frequency of daily or weekly), and appearance (light, dark, or match system). Saving should confirm the changes. Make it look and feel like a professional Microsoft web app. Prefill the profile with Megan Bowen, megan.bowen@fabrikam.com, Marketing manager."
+	},
+	{
+		"id": "team",
+		"project": "contoso-admin",
+		"hidden": false,
+		"seeds": 2,
+		"prompt": "Build an admin page for managing our team members. Show 12 sample members with name, email, role (Owner, Admin, Member), status (Active, Invited, Suspended), and last active date. Let me search by name or email, filter by role, invite a new member with a form, and remove a member. Make it look and feel like a professional Microsoft web app."
+	},
+	{
+		"id": "expenses",
+		"project": "tailspin-expenses",
+		"hidden": true,
+		"seeds": 2,
+		"prompt": "Build an expense tracker. I want to add an expense with a description, amount, category (Travel, Meals, Supplies, Software), and date, see all expenses in a list, delete one, and see the total for each category. Start with 8 sample expenses. Make it look and feel like a professional Microsoft web app."
+	}
+]

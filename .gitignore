@@ -1,0 +1,5 @@
+node_modules/
+dist/
+scratch/
+eval/runs/
+.DS_Store
