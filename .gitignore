@@ -3,3 +3,5 @@ dist/
 scratch/
 eval/runs/
 .DS_Store
+.opencode/
+AGENTS.md
