@@ -90,6 +90,10 @@ Open an issue in this repository. Include the request you gave the agent, the mo
 | `docs/` | [How fskill was tested](docs/results.md) and the screenshots. |
 | `decisions.tsv` | The log of every design decision, its reason, and its evidence. |
 
+## License
+
+fskill is licensed under the [GNU General Public License v3.0](LICENSE). If you share a modified copy of fskill, you must share it under the same license.
+
 ## Trademarks
 
 Microsoft and Fluent are trademarks of Microsoft Corporation. fskill is an independent project, and Microsoft does not endorse or maintain it.
